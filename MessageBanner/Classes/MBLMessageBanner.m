@@ -392,7 +392,7 @@ static struct delegateMethodsCaching {
                 realViewController = viewController;
             }
             
-            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
+            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.view
                                                                             attribute:NSLayoutAttributeBottom
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:message
