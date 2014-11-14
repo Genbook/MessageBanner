@@ -9,6 +9,7 @@
 
 #import "MBLMessageBanner.h"
 #import "MBLMessageBannerView.h"
+#import "Masonry.h"
 
 #pragma mark - MBLMessageBanner interface
 @interface MBLMessageBanner ()
@@ -388,17 +389,17 @@ static struct delegateMethodsCaching {
             
             if ([viewController isKindOfClass:[UINavigationController class]]) {
                 realViewController = [(UINavigationController*)viewController visibleViewController];
+                [message mas_updateConstraints:^(MASConstraintMaker *make) {
+                    CGFloat topOffset = [(UINavigationController*)viewController navigationBar].bounds.size.height + 20;
+                    make.top.equalTo(message.superview).with.offset(topOffset);
+                }];
             } else {
                 realViewController = viewController;
+                [message mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(message.superview);
+                }];
             }
             
-            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:message
-                                                                            attribute:NSLayoutAttributeTop
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f]];
             break;
         }
         case MBLMessageBannerPositionCenter: {
