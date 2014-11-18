@@ -11,11 +11,10 @@
 #import "MBLMessageBanner.h"
 #import "HexColor.h"
 #import "FXBlurView.h"
-
 /**
  The default design file
  */
-static NSString *defaultDesignFile = @"MessageBannerDesign.json";
+#define DEFAULT_DESIGN_FILE                 @"MessageBannerDesign.json"
 
 /**
  The label of the error type message banner configuration
@@ -216,7 +215,7 @@ static NSMutableDictionary* _messageBannerDesign;
 /**
  The blurr view attached to the viewcontroller if activated
  */
-@property (nonatomic, strong) FXBlurView*   blurView;
+@property (nonatomic, strong) UIView*   blurView;
 /**
  The message view height used for calculs
  */
@@ -249,16 +248,11 @@ static NSMutableDictionary* _messageBannerDesign;
     return success;
 }
 
-+ (void)setDefaultDesignFile:(NSString *)fileName
-{
-    defaultDesignFile = fileName;
-}
-
 + (NSMutableDictionary *)messageBannerDesign {
     if (!_messageBannerDesign) {
         NSError* error;
         NSString *filePath = [[[NSBundle mainBundle] resourcePath]
-                              stringByAppendingPathComponent:defaultDesignFile];
+                              stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
         _messageBannerDesign = [[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
                                                                 options:kNilOptions
                                                                   error:&error] mutableCopy];
@@ -266,7 +260,7 @@ static NSMutableDictionary* _messageBannerDesign;
         if (error) {
             @throw ([NSException exceptionWithName:@"Error loading default design"
                                             reason:
-                     [NSString stringWithFormat:@"Can not load %@.\nError:%@", defaultDesignFile, error]
+                     [NSString stringWithFormat:@"Can not load %@.\nError:%@", DEFAULT_DESIGN_FILE, error]
                                           userInfo:nil]);
         }
     }
@@ -436,11 +430,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     CGFloat blurRadius = [[_currentDesign objectForKey:BLUR_RADIUS_KEY] floatValue];
     
     if (blurRadius != 0.0) {
-        self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
-        self.blurView.underlyingView = self.viewController.view;
-        self.blurView.tintColor = [UIColor clearColor];
-        self.blurView.blurRadius = blurRadius;
-        self.blurView.alpha = 0.f;
+        if([UIBlurEffect class]) { // iOS 8
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+            self.blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            self.blurView.frame = self.viewController.view.bounds;
+            
+        } else { // workaround for iOS 7
+            self.blurView = [[UIToolbar alloc] initWithFrame:self.viewController.view.bounds];
+        }
+
+//        self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
+//        self.blurView.underlyingView = self.viewController.view;
+//        self.blurView.tintColor = [UIColor clearColor];
+//        self.blurView.blurRadius = blurRadius;
+        self.blurView.alpha = 0.0f;
         
         if ([[MBLMessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
             if ([[MBLMessageBanner sharedSingleton] isViewControllerNavigationController:self]) {
@@ -463,7 +466,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         }
         
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            self.blurView.alpha = 1.f;
+            self.blurView.alpha = 0.4f;
         } completion:nil];
     }
 }
