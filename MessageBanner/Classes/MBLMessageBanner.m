@@ -58,7 +58,7 @@
 /**
  Default message banner duration mode
  */
-#define DURATION_DEFAULT        MBLMessageBannerDurationDefault
+#define DURATION_DEFAULT        0
 /**
  Default message banner position mode
  */
@@ -163,21 +163,6 @@ static struct delegateMethodsCaching {
 #pragma mark Show methods
 
 + (void)showMessageBanner:(MBLMessageBannerView *)messageBannerView {
-
-
-    // Preparing and showing notification Future version protection
-    //#warning uncomment after testing
-
-    //    NSString *title = messageBannerView.title;
-    //    NSString *subtitle = messageBannerView.subTitle;
-    //    for (MBLMessageBannerView *n in [MBLMessageBanner sharedSingleton].messagesBannersList)
-    //    {
-    //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
-    //        {
-    //            // Add some check in the config file later if it allow multiple pop-ups
-    //            return;
-    //        }
-    //    }
 
     [[MBLMessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
 
@@ -477,8 +462,6 @@ static struct delegateMethodsCaching {
     if (_delegate && _delegateRespondTo.messageBannerViewWillAppear == YES) {
         [_delegate messageBannerViewWillAppear:currentMessageBanner];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:currentMessageBanner];
-    
     [currentMessageBanner setBlur];
     
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
@@ -495,7 +478,6 @@ static struct delegateMethodsCaching {
         if (_delegate && _delegateRespondTo.messageBannerViewDidAppear == YES) {
             [_delegate messageBannerViewDidAppear:currentMessageBanner];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:currentMessageBanner];
     }];
     
     [self initAutoDismissTimerforBanner:currentMessageBanner];
@@ -537,14 +519,9 @@ static struct delegateMethodsCaching {
     //    Removing timer Callback
     message.isBannerDisplayed = NO;
     
-    if (message.duration != MBLMessageBannerDurationEndless) {
-        [message.dismissTimer invalidate];
-    }
-    
     if (_delegate && _delegateRespondTo.messageBannerViewWillDisappear == YES) {
         [_delegate messageBannerViewWillDisappear:message];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:message];
     
     [message unsetBlur];
     
@@ -600,8 +577,6 @@ static struct delegateMethodsCaching {
         if (_delegate && _delegateRespondTo.messageBannerViewDidDisappear == YES) {
             [_delegate messageBannerViewDidDisappear:message];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:message];
-
         
         if ([[[MBLMessageBanner sharedSingleton] messagesBannersList] count]) {
             [[MBLMessageBanner sharedSingleton] showMessageBannerOnScreen];
@@ -616,29 +591,26 @@ static struct delegateMethodsCaching {
 - (void) initAutoDismissTimerforBanner:(MBLMessageBannerView *)message {
     CGFloat timerSec = ANIMATION_DURATION;
     
-    if (message.duration != MBLMessageBannerDurationEndless) {
-        
-        if (message.duration == MBLMessageBannerDurationDefault) {
-            timerSec += DISPLAY_DEFAULT_DURATION + (message.frame.size.height * DISPLAY_TIME_PER_PIXEL);
-        } else {
-            timerSec += message.duration;
-        }
-        
-        UITapGestureRecognizer *tap = nil;
-        void (^completion)() = nil;
-        NSMethodSignature *meth = [[MBLMessageBanner sharedSingleton]methodSignatureForSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
-        NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
-        [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
-        [hideMethodInvocation setTarget:[MBLMessageBanner sharedSingleton]];
-        [hideMethodInvocation setArgument:&message atIndex:2];
-        [hideMethodInvocation setArgument:&tap atIndex:3];
-        [hideMethodInvocation setArgument:&completion atIndex:4];
-        [hideMethodInvocation retainArguments];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            message.dismissTimer = [NSTimer scheduledTimerWithTimeInterval:timerSec invocation:hideMethodInvocation repeats:NO];
-        });
+    if (message.duration == 0) {
+        timerSec += DISPLAY_DEFAULT_DURATION + (message.frame.size.height * DISPLAY_TIME_PER_PIXEL);
+    } else {
+        timerSec += message.duration;
     }
+    
+    UITapGestureRecognizer *tap = nil;
+    void (^completion)() = nil;
+    NSMethodSignature *meth = [[MBLMessageBanner sharedSingleton]methodSignatureForSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
+    NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
+    [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
+    [hideMethodInvocation setTarget:[MBLMessageBanner sharedSingleton]];
+    [hideMethodInvocation setArgument:&message atIndex:2];
+    [hideMethodInvocation setArgument:&tap atIndex:3];
+    [hideMethodInvocation setArgument:&completion atIndex:4];
+    [hideMethodInvocation retainArguments];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        message.dismissTimer = [NSTimer scheduledTimerWithTimeInterval:timerSec invocation:hideMethodInvocation repeats:NO];
+    });
 }
 
 #pragma mark -

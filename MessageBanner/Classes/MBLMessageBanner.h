@@ -10,24 +10,6 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- Message banner notification sended when the messagebanner will appear
- */
-#define MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION @"MBLMessageBannerViewWillAppearNotification"
-/**
- Message banner notification sended when the messagebanner did appear
- */
-#define MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION @"MBLMessageBannerViewDidAppearNotification"
-/**
- Message banner notification sended when the messagebanner will disappear
- */
-#define MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION @"MBLMessageBannerViewWillDisappearNotification"
-/**
- Message banner notification sended when the messagebanner did disappear
- */
-#define MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION @"MBLMessageBannerViewDidDisappearNotification"
-
-
 // Forward declaration to avoid double includes problems
 @class MBLMessageBannerView;
 
@@ -48,14 +30,6 @@ typedef NS_ENUM(NSInteger, MBLMessageBannerPosition) {
     , MBLMessageBannerPositionCenter = 1 /** A centered positioned message banner */
     , MBLMessageBannerPositionBottom = 2 /** A bottom positioned message banner   */
 };
-/**
- An enumeration of custom message banner duration
- */
-typedef NS_ENUM(NSInteger, MBLMessageBannerDuration) {
-      MBLMessageBannerDurationDefault = 0  /** A duration calculated automatically */
-    , MBLMessageBannerDurationEndless = -1 /** An endless duration                 */
-};
-
 
 /**
  Set of methods to implement to be notified on appearance/disappearance of message banners

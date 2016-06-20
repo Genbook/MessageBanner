@@ -9,7 +9,7 @@
 
 #import "MBLMessageBannerView.h"
 #import "MBLMessageBanner.h"
-#import "HexColor.h"
+#import "HexColors.h"
 #import "FXBlurView.h"
 /**
  The default design file
@@ -46,10 +46,6 @@
  The backgorund alpha key in the design configuration file
  */
 #define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
-/**
- The  background image key in the design configuration file
- */
-#define BACKGROUND_IMAGE_KEY                @"backgroundImageName"
 
 /**
  The  default left image for the type in the design configuration file
@@ -64,22 +60,6 @@
  The title text color key in the design configuration file
  */
 #define TITLE_TEXT_COLOR_KEY                @"titleTextColor"
-/**
- The title text shadow color key in the design configuration file
- */
-#define TITLE_TEXT_SHADOW_COLOR_KEY         @"titleTextShadowColor"
-/**
- The title text shadow X offset key in the design configuration file
- */
-#define TITLE_TEXT_SHADOW_OFFSET_X_KEY      @"titleTextShadowOffsetX"
-/**
- The title text shadow Y offset key in the design configuration file
- */
-#define TITLE_TEXT_SHADOW_OFFSET_Y_KEY      @"titleTextShadowOffsetY"
-/**
- The the title text shadow alpha key in the design configuration file
- */
-#define TITLE_TEXT_SHADOW_ALPHA_KEY         @"titleTextShadowAlpha"
 
 /**
  The subtitle text size key in the design configuration file
@@ -89,82 +69,16 @@
  The subtitle text color key in the design configuration file
  */
 #define SUBTITLE_TEXT_COLOR_KEY             @"subtitleTextColor"
-/**
- The subtitle text shadow color key in the design configuration file
- */
-#define SUBTITLE_TEXT_SHADOW_COLOR_KEY      @"subtitleTextShadowColor"
-/**
- The subtitle text shadow X offset key in the design configuration file
- */
-#define SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY   @"subtitleTextShadowOffsetX"
-/**
- The subtitle text shadow Y offset key in the design configuration file
- */
-#define SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY   @"subtitleTextShadowOffsetY"
-/**
- The subtitle text shadow alpha key in the design configuration file
- */
-#define SUBTITLE_TEXT_SHADOW_ALPHA_KEY      @"subtitleTextShadowAlpha"
-
-/**
- The button background color key in the design configuration file
- */
-#define BUTTON_BACKGROUND_COLOR_KEY         @"buttonBackgroundColor"
-/**
- The button background image key in the design configuration file
- */
-#define BUTTON_BACKGROUND_IMAGE_KEY         @"buttonBackgroundImage"
-/**
- The button image pattern background key in the design configuration file
- */
-#define BUTTON_BACKGROUND_PATTERN_IMAGE_KEY @"buttonBackgroundPatternImage"
-/**
- The button background alpha key in the design configuration file
- */
-#define BUTTON_BACKGROUND_ALPHA_KEY         @"buttonBackgroundAlpha"
-
-/**
- The button corener radius key in the design configuration file
- */
-#define BUTTON_CORNER_RADIUS_KEY            @"buttonCornerRadius"
-/**
- The button border color key in the design configuration file
- */
-#define BUTTON_BORDER_COLOR_KEY             @"buttonBorderColor"
-/**
- The button border alpha key in the design configuration file
- */
-#define BUTTON_BORDER_ALPHA_KEY             @"buttonBorderAlpha"
-/**
- The button border size key in the design configuration file
- */
-#define BUTTON_BORDER_SIZE_KEY              @"buttonBorderSize"
-
-/**
- The button text color key in the design configuration file
- */
-#define BUTTON_TEXT_COLOR_KEY               @"buttonTextColor"
-/**
- The button text shadow color key in the design configuration file
- */
-#define BUTTON_TEXT_SHADOW_COLOR_KEY        @"buttonTextShadowColor"
-/**
- The button text shadow X offset key in the design configuration file
- */
-#define BUTTON_TEXT_SHADOW_OFFSET_X_KEY     @"buttonTextShadowOffsetX"
-/**
- The button text shadow Y offset key in the design configuration file
- */
-#define BUTTON_TEXT_SHADOW_OFFSET_Y_KEY     @"buttonTextShadowOffsetY"
-/**
- The button text shadow alpha key in the design configuration file
- */
-#define BUTTON_TEXT_SHADOW_ALPHA_KEY        @"buttonTextShadowAlpha"
 
 /**
  The default element padding used for positionning
  */
-#define ELEMENTS_PADDING                    16.0f
+#define ELEMENTS_PADDING                    20.0f
+
+/**
+ The default element padding used for positionning
+ */
+#define VERTICAL_SPACING                    5.0f
 
 /**
  The animation duration used for setting the blur
@@ -589,10 +503,10 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     NSMutableDictionary *topBotCorrectDictionnary;
     
     if (!titleAndSubtitleDictionary) {
-        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", VERTICAL_SPACING, VERTICAL_SPACING];
         topBotCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:titleAndViewDictionary];
     } else {
-        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", VERTICAL_SPACING, VERTICAL_SPACING];
         topBotCorrectDictionnary = titleAndSubtitleDictionary;
     }
     [self addConstraints:
@@ -664,7 +578,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     }
     
     [subtitleView setFrame:CGRectMake(  leftOffset
-                                      , (ELEMENTS_PADDING + self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height)
+                                      , (5 + self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height)
                                       , self.viewController.view.bounds.size.width - leftOffset - rightOffset
                                       , 0.0f
                                       )];
@@ -691,7 +605,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     NSString *topBotConstraintVisualFormat;
     NSMutableDictionary *topBotCorrectDictionnary;
     
-    topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:[_titleLabel]-==%f-[_subtitleLabel]-==%f-|", ELEMENTS_PADDING, ELEMENTS_PADDING];
+    topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:[_titleLabel]-==%f-[_subtitleLabel]-==%f-|", VERTICAL_SPACING, VERTICAL_SPACING];
     topBotCorrectDictionnary = subtitleAndTitleDictionary;
     [self addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:topBotConstraintVisualFormat
@@ -738,7 +652,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     self.imageView = [[UIImageView alloc] initWithImage:image];
     self.imageView.frame = CGRectMake(ELEMENTS_PADDING,
-                                      ((ELEMENTS_PADDING +  self.messageViewHeight - image.size.height) /2),
+                                      5,
                                       image.size.width,
                                       image.size.height);
     
@@ -752,12 +666,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
-                                  attribute:NSLayoutAttributeCenterY
+                                  attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:_imageView
-                                  attribute:NSLayoutAttributeCenterY
+                                  attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
-                                   constant:0.0f]];
+                                   constant:-5.0f]];
     
     
     NSString* leftRightConstraintsVisualFormat = [NSString stringWithFormat:@"H:|-==%f-[_imageView]-==%f-[_titleLabel]"
@@ -913,52 +827,19 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
     
-    [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];
-    if ([messageStyle objectForKey:BACKGROUND_IMAGE_KEY] && [UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]) {
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]]];
-        [self setAlpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]];
-    }
+    [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];    
     
-    
-    [self.titleLabel setFont:[UIFont boldSystemFontOfSize:[[messageStyle valueForKey:TITLE_TEXT_SIZE_KEY] floatValue]]];
+    self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:[[messageStyle valueForKey:TITLE_TEXT_SIZE_KEY] floatValue]];
     [self.titleLabel setTextColor:[UIColor colorWithHexString:[messageStyle objectForKey:TITLE_TEXT_COLOR_KEY]]];
-    [self.titleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:TITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:TITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
-    [self.titleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:TITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
-                                                 [[messageStyle objectForKey: TITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
+//    [self.titleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:TITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:TITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
+//    [self.titleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:TITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
+//                                                 [[messageStyle objectForKey: TITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
 
-    
-    [self.subtitleLabel setFont:[UIFont systemFontOfSize:[[messageStyle valueForKey:SUBTITLE_TEXT_SIZE_KEY] floatValue]]];
+    self.subtitleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:[[messageStyle valueForKey:SUBTITLE_TEXT_SIZE_KEY] floatValue]];
     [self.subtitleLabel setTextColor:[UIColor colorWithHexString:[messageStyle objectForKey:SUBTITLE_TEXT_COLOR_KEY]]];
-    [self.subtitleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
-    [self.subtitleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
-                                                [[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
-    
-    
-
-    [self.button setTitleColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_TEXT_COLOR_KEY]] forState:UIControlStateNormal];
-    [self.button setTitleShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_TEXT_SHADOW_ALPHA_KEY] floatValue]] forState:UIControlStateNormal];
-    [self.button.titleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:BUTTON_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
-                                                      [[messageStyle objectForKey:BUTTON_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
-    
-    
-    [self.button setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]]];
-    
-    if ([messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY] != nil &&
-        [UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY]] != nil) {
-        [self.button setBackgroundImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY]] forState:UIControlStateNormal];
-        [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
-    }
-    if ([messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY] != nil &&
-        [UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]] != nil) {
-        [self.button setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]]]];
-        [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
-    }
-    [self.button.layer setCornerRadius:[[messageStyle objectForKey:BUTTON_CORNER_RADIUS_KEY] floatValue]];
-    [self.button.layer setMasksToBounds:YES];
-    
-    [self.button.layer setBorderColor:[[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_BORDER_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_BORDER_ALPHA_KEY] floatValue]] CGColor]];
-    [self.button.layer setBorderWidth:[[messageStyle objectForKey:BUTTON_BORDER_SIZE_KEY] floatValue]];
-    
+//    [self.subtitleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
+//    [self.subtitleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
+//                                                [[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
 }
 
 #pragma mark -
