@@ -209,7 +209,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         _userPressedButtonCallback = userPressedButtonCallback;
         
         _position = position;
-        _userDismissEnabled = dismissingEnabled;
+        _userDismissEnabled = YES;
         
         self.messageViewHeight = 0.0f;
         _isBannerDisplayed = NO;

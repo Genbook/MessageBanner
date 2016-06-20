@@ -566,7 +566,9 @@ static struct delegateMethodsCaching {
         [message setCenter:fadeOutCenter];
     } completion:^(BOOL finished) {
         [message removeFromSuperview];
-        [[[MBLMessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
+        if ([[MBLMessageBanner sharedSingleton] messagesBannersList].count > 0) {
+            [[[MBLMessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
+        }
         [MBLMessageBanner sharedSingleton].messageOnScreen = NO;
         
         if (completion) {
