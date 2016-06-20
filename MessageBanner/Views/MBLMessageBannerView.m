@@ -330,11 +330,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             break;
     }
     [self addGestureRecognizer:dismissGesture];
-    
-    UITapGestureRecognizer *dismissGesture3 = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                      action:@selector(dismissViewWithGesture:)];
-    [dismissGesture3 setNumberOfTapsRequired:1];
-    [self addGestureRecognizer:dismissGesture3];
 }
 
 #pragma mark -
@@ -378,7 +373,11 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         else {
             [self.viewController.view addSubview:self.blurView];
         }
-        
+        UITapGestureRecognizer *dismissGesture3 = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                          action:@selector(dismissViewWithGesture:)];
+        [dismissGesture3 setNumberOfTapsRequired:1];
+        [self.blurView addGestureRecognizer:dismissGesture3];
+
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.blurView.alpha = 0.4f;
         } completion:nil];
