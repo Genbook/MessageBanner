@@ -78,7 +78,7 @@
 /**
  The default element padding used for positionning
  */
-#define VERTICAL_SPACING                    5.0f
+#define VERTICAL_SPACING                    7.0f
 
 /**
  The animation duration used for setting the blur
@@ -347,11 +347,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         } else { // workaround for iOS 7
             self.blurView = [[UIToolbar alloc] initWithFrame:self.viewController.view.bounds];
         }
-
-//        self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
-//        self.blurView.underlyingView = self.viewController.view;
-//        self.blurView.tintColor = [UIColor clearColor];
-//        self.blurView.blurRadius = blurRadius;
+        
         self.blurView.alpha = 0.0f;
         
         if ([[MBLMessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
@@ -505,7 +501,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", VERTICAL_SPACING, VERTICAL_SPACING];
         topBotCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:titleAndViewDictionary];
     } else {
-        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", VERTICAL_SPACING, VERTICAL_SPACING];
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", VERTICAL_SPACING, 3.0f];
         topBotCorrectDictionnary = titleAndSubtitleDictionary;
     }
     [self addConstraints:
@@ -604,7 +600,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     NSString *topBotConstraintVisualFormat;
     NSMutableDictionary *topBotCorrectDictionnary;
     
-    topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:[_titleLabel]-==%f-[_subtitleLabel]-==%f-|", VERTICAL_SPACING, VERTICAL_SPACING];
+    topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:[_titleLabel]-==%f-[_subtitleLabel]-==%f-|", 3.0f, VERTICAL_SPACING];
     topBotCorrectDictionnary = subtitleAndTitleDictionary;
     [self addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:topBotConstraintVisualFormat
